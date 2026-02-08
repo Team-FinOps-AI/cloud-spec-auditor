@@ -17,6 +17,7 @@ class Recommendation(BaseModel):
 
     class Status(models.TextChoices):
         """진단 상태"""
+
         PENDING = "PENDING", "분석 중"
         COMPLETED = "COMPLETED", "완료"
         FAILED = "FAILED", "실패"
@@ -102,6 +103,7 @@ class RecommendationItem(BaseModel):
 
     class RecommendationType(models.TextChoices):
         """추천 유형"""
+
         DOWNSIZE = "DOWNSIZE", "다운사이징 (스펙 축소)"
         SWITCH_PROVIDER = "SWITCH_PROVIDER", "프로바이더 변경 (타사 전환)"
         SWITCH_PRICING = "SWITCH_PRICING", "가격 모델 변경 (Spot/Reserved)"

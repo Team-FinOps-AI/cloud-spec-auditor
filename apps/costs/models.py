@@ -1,6 +1,7 @@
 from django.contrib.admin.utils import help_text_for_field
 from django.db import models
-from apps.core.choices import Provider, NormalizedRegion
+
+from apps.core.choices import NormalizedRegion, Provider
 from apps.core.models import BaseModel
 from apps.costs.choices import ConfidenceLevel, PricingModel, PricingSource
 
@@ -21,7 +22,7 @@ class CloudService(BaseModel):
         choices=NormalizedRegion.choices,
         null=True,
         blank=True,
-        help_text="표준화된 리전 코드"
+        help_text="표준화된 리전 코드",
     )
 
     # 스펙
