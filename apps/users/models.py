@@ -1,7 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from apps.core.models import BaseModel
+
 from apps.core.choices import NormalizedRegion, Provider
+from apps.core.models import BaseModel
+
 
 class User(AbstractUser):
     """
@@ -10,26 +12,22 @@ class User(AbstractUser):
     클라우드 비용 최적화 서비스 사용자 정보를 저장
     3사(AWS, GCP, Azure) 클라우드 연동 정보를 관리
     """
+
     # 기본정보(AbstractUser 상속)
     email = models.EmailField(
         unique=True,
         help_text="이메일 주소",
     )
     # 추가 프로필 정보
-    company_name = models.CharField(
-        max_length=100,
-          blank=True,
-            null=True,
-            help_text="소속 회사명"
-        )
+    company_name = models.CharField(max_length=100, blank=True, null=True, help_text="소속 회사명")
     phone_number = models.CharField(
         max_length=20,
-          blank=True,
-            null=True,
-            unique=True,
-            help_text="연락처",
-        )
-    
+        blank=True,
+        null=True,
+        unique=True,
+        help_text="연락처",
+    )
+
     # 기본 정보
 
     default_provider = models.CharField(
@@ -78,26 +76,26 @@ class User(AbstractUser):
     def has_any_credentials(self) -> bool:
         """클라우드 연동 여부 확인(한개라도 있으면 True)"""
         return self.cloud_credentials.filter(is_active=True).exists()
-    
+
     @property
     def connected_providers(self) -> list[str]:
         """연동된 클라우드 제공자 목록"""
         return list(
-            self.cloud_credentials
-            .filter(is_active=True)
-            .values_list("provider", flat=True)
+            self.cloud_credentials.filter(is_active=True).values_list("provider", flat=True)
         )
-    
+
+
 class CloudCredential(BaseModel):
     """
     클라우드 인증 정보(AWS, GCP, Azure)
-    
+
     사용자별로 여러 클라우드 계정을 연동
     인증 정보는 암호화하여 저장
     """
 
     class CredentialType(models.TextChoices):
         """인증 방식"""
+
         ACCESS_KEY = "ACCESS_KEY", "Access Key(AWS)"
         SERVICE_ACCOUNT = "SERVICE_ACCOUNT", "Service Account(GCP)"
         SERVICE_PRINCIPAL = "SERVICE_PRINCIPAL", "Service Principal(Azure)"
@@ -109,7 +107,7 @@ class CloudCredential(BaseModel):
         related_name="cloud_credentials",
         help_text="연동된 사용자",
     )
-    
+
     # 클라우드 정보
     provider = models.CharField(
         max_length=10,
@@ -121,13 +119,9 @@ class CloudCredential(BaseModel):
         choices=CredentialType.choices,
         help_text="인증 방식",
     )
-    nickname = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="사용자 지정 별칭"
-    )
+    nickname = models.CharField(max_length=50, blank=True, help_text="사용자 지정 별칭")
 
-     # ==================== AWS 인증 정보 ====================
+    # ==================== AWS 인증 정보 ====================
     aws_access_key_id = models.CharField(
         max_length=200,
         blank=True,
@@ -220,12 +214,10 @@ class CloudCredential(BaseModel):
                 name="unique_user_provider_nickname",
             )
         ]
-    
+
     def __str__(self):
         nickname = self.nickname or self.provider
         return f"{self.user.username} - {nickname}"
-
-
 
     # ==================== Properties ====================
     @property
@@ -255,8 +247,3 @@ class CloudCredential(BaseModel):
                 and self.azure_subscription_id
             )
         return False
-
-
-    
-
-

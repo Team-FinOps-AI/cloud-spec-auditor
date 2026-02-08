@@ -11,8 +11,10 @@ from apps.users.serializers import (
 )
 from apps.users.services.auth_service import AuthService
 
+
 class SignupView(APIView):
     """회원가입 뷰"""
+
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -21,14 +23,18 @@ class SignupView(APIView):
 
         user, tokens = AuthService.signup(serializer.validated_data)
 
-        return Response({
-            "user": UserResponseSerializer(user).data,
-            "tokens": tokens,
-        }, status=status.HTTP_201_CREATED,
+        return Response(
+            {
+                "user": UserResponseSerializer(user).data,
+                "tokens": tokens,
+            },
+            status=status.HTTP_201_CREATED,
         )
-    
+
+
 class LoginView(APIView):
     """로그인 뷰"""
+
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -40,13 +46,18 @@ class LoginView(APIView):
             serializer.validated_data["password"],
         )
 
-        return Response({
-            "user": UserResponseSerializer(user).data,
-            "tokens": tokens,
-        }, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "user": UserResponseSerializer(user).data,
+                "tokens": tokens,
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 class LogoutView(APIView):
     """로그아웃 뷰"""
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -56,6 +67,3 @@ class LogoutView(APIView):
         AuthService.blacklist_token(serializer.validated_data["refresh"])
 
         return Response(status=status.HTTP_205_RESET_CONTENT)
-
-
-

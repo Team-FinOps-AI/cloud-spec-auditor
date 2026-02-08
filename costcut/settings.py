@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "apps.costs",
     "apps.users",
     "apps.inventories",
-    "rest_framework_simplejwt.token_blacklist"
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 AUTH_USER_MODEL = "users.User"
