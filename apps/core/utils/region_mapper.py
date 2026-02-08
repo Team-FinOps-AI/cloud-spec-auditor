@@ -1,6 +1,5 @@
 from apps.core.choices import NormalizedRegion
 
-
 REGION_MAPPING: dict[str, NormalizedRegion] = {
     # ===== AWS =====
     # 아시아
@@ -25,7 +24,6 @@ REGION_MAPPING: dict[str, NormalizedRegion] = {
     # "eu-north-1": NormalizedRegion.EU_NORTH,
     # # 남미
     # "sa-east-1": NormalizedRegion.BR,
-
     # ===== GCP =====
     # 아시아
     "asia-northeast3": NormalizedRegion.KR,
@@ -50,7 +48,6 @@ REGION_MAPPING: dict[str, NormalizedRegion] = {
     # "europe-north1": NormalizedRegion.EU_NORTH,
     # # 남미
     # "southamerica-east1": NormalizedRegion.BR,
-
     # ===== Azure =====
     # 아시아
     "koreacentral": NormalizedRegion.KR,
@@ -117,7 +114,9 @@ def get_provider_regions(normalized: NormalizedRegion) -> dict[str, list[str]]:
 
         if region.startswith(("ap-", "us-", "eu-", "ca-", "sa-")):
             result["AWS"].append(region)
-        elif region.startswith(("asia-", "australia-", "europe-", "northamerica-", "southamerica-")):
+        elif region.startswith(
+            ("asia-", "australia-", "europe-", "northamerica-", "southamerica-")
+        ):
             result["GCP"].append(region)
         else:
             result["AZURE"].append(region)

@@ -3,6 +3,7 @@ from django.db import models
 
 class Provider(models.TextChoices):
     """클라우드 서비스 제공자"""
+
     AWS = "AWS", "Amazon Web Services"
     GCP = "GCP", "Google Cloud Platform"
     AZURE = "AZURE", "Microsoft Azure"
@@ -10,6 +11,7 @@ class Provider(models.TextChoices):
 
 class NormalizedRegion(models.TextChoices):
     """정규화된 리전 (3사 비교용)"""
+
     # 아시아
     KR = "KR", "South Korea"
     JP = "JP", "Japan"
