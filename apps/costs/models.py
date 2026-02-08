@@ -1,6 +1,6 @@
+from django.contrib.admin.utils import help_text_for_field
 from django.db import models
-
-from apps.core.choices import Provider
+from apps.core.choices import Provider, NormalizedRegion
 from apps.core.models import BaseModel
 from apps.costs.choices import ConfidenceLevel, PricingModel, PricingSource
 
@@ -15,6 +15,13 @@ class CloudService(BaseModel):
     instance_type = models.CharField(max_length=50, help_text="인스턴스 유형")
     region = models.CharField(
         max_length=50, default="us-east-1", help_text="클라우드 provider 원본 리전"
+    )
+    region_normalized = models.CharField(
+        max_length=20,
+        choices=NormalizedRegion.choices,
+        null=True,
+        blank=True,
+        help_text="표준화된 리전 코드"
     )
 
     # 스펙
